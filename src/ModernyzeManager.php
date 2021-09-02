@@ -159,9 +159,9 @@ class ModernyzeManager
      * @param string $product
      * @param string $version
      * @param string $directory
-     * @return void
+     * @return string
      */
-    public function downloadAndVerify(string $product, string $version, string $directory)
+    public function downloadAndVerify(string $product, string $version, string $directory): string
     {
         // get download information
         $information = $this->request(rtrim($this->url, "/") . "/api/product/$product/$version");
@@ -177,6 +177,8 @@ class ModernyzeManager
             unlink($filename);
             throw new ModernyzeException("Hash invalid. The downloaded update file seems to be corrupt and will be deleted.");
         }
+
+        return $filename;
     }
 
     /**
@@ -191,7 +193,7 @@ class ModernyzeManager
     public function update(string $product, string $version, string $directory): bool
     {
         // download and verify
-        $this->downloadAndVerify($product, $version, $directory);
+        $filename = $this->downloadAndVerify($product, $version, $directory)    ;
 
         // install update
         $zip = new ZipArchive();
