@@ -191,6 +191,7 @@ class ModernyzeManager
     public function update(string $product, string $version, string $directory): bool
     {
         // download and verify
+        $this->downloadAndVerify($product, $version, $directory);
 
         // install update
         $zip = new ZipArchive();
